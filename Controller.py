@@ -91,6 +91,11 @@ class Controller3D():
         theta_d = (1/self.params.g)*(setpoint.x_acc*cos(state.psi) + setpoint.y_acc*sin(state.psi))
         psi_d = state.psi
 
+        # ANGLE TESTING HERE
+        # phi_d = 0
+        # theta_d = 0
+        # psi_d = .5
+
         # Angle errors
         E_phi = float(phi_d - state.phi)
         E_theta = float(theta_d - state.theta)
@@ -106,5 +111,12 @@ class Controller3D():
         U[1] = self.kd_p*E_dot_phi + self.kp_phi*E_phi
         U[2] = self.kd_q*E_dot_theta + self.kp_theta*E_theta
         U[3] = self.kd_r*E_dot_psi + self.kp_psi*E_psi
+
+        self.E_last_phi = E_phi
+        self.E_last_theta = E_theta
+        self.E_last_psi = E_psi
+
+        print("Error: ", E_psi, "Desired: ", psi_d, "Actual: ", state.psi)
+        # print("phi: ", state.phi, "theta: ", state.theta, "psi: ", state.psi)
 
         return U
